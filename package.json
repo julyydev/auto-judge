@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "automatic compilation, execution, and I/O testing of online judge source code",
   "main": "dist/index.js",
-  "types" : "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "bin": {
     "auto-judge": "./dist/index.js"
   },
@@ -28,6 +28,11 @@
   },
   "homepage": "https://github.com/julyydev/auto-judge#readme",
   "devDependencies": {
+    "@types/node": "^20.4.8",
+    "@types/yargs": "^17.0.24",
     "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "yargs": "^17.7.2"
   }
 }
