@@ -1,0 +1,33 @@
+{
+  "name": "auto-judge",
+  "version": "0.0.1",
+  "description": "automatic compilation, execution, and I/O testing of online judge source code",
+  "main": "dist/index.js",
+  "types" : "dist/index.d.ts",
+  "bin": {
+    "auto-judge": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "dev": "ts-node ./lib/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/julyydev/auto-judge.git"
+  },
+  "keywords": [
+    "online",
+    "judge",
+    "boj"
+  ],
+  "author": "julyydev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/julyydev/auto-judge/issues"
+  },
+  "homepage": "https://github.com/julyydev/auto-judge#readme",
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}
