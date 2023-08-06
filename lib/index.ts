@@ -1,3 +1,5 @@
 #!/usr/bin/env node
 
-console.log("Auto Judge!!!");
+import enterCommand from './enterCommand';
+
+enterCommand();
