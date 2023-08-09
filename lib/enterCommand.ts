@@ -34,8 +34,8 @@ const enterCommand = () => {
                     alias: 't',
                 },
             },
-            handler: argv => {
-                runAutoJudge(
+            handler: async argv => {
+                await runAutoJudge(
                     argv.platform,
                     argv.id,
                     argv.sourceFile,
