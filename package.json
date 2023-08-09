@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "chalk": "^4.1.2",
+    "cheerio": "^1.0.0-rc.12",
     "yargs": "^17.7.2"
   }
 }
