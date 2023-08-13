@@ -60,7 +60,9 @@ const runTestCases = async (
 
             const testResult: TestResult = {
                 number: index + 1,
-                isSuccess: result === testCase.output,
+                isSuccess:
+                    removeLeadingSpaces(result!) ===
+                    removeLeadingSpaces(testCase.output),
                 time: (end - start).toFixed(0),
                 expected: testCase.output,
                 received: result as string,
@@ -75,7 +77,9 @@ const runTestCases = async (
 
         const testResult: TestResult = {
             number: specificCase,
-            isSuccess: result === testCases[specificCase - 1].output,
+            isSuccess:
+                removeLeadingSpaces(result!) ===
+                removeLeadingSpaces(testCases[specificCase - 1].output),
             time: (end - start).toFixed(0),
             expected: testCases[specificCase - 1].output,
             received: result as string,
@@ -125,4 +129,8 @@ const calculateTestResults = (testResults: TestResult[]) => {
         numberOfPassedTest: counts.passedCount,
         numberOfFailedTest: counts.failedCount,
     };
+};
+
+const removeLeadingSpaces = (str: string): string => {
+    return str.replace(/ +\n/g, '\n');
 };
