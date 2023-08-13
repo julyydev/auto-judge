@@ -70,7 +70,7 @@ const createBaekjoonInputFile = async (id: number) => {
 
     testCases.forEach((testCase, index) => {
         fs.writeFileSync(
-            `temp/input_${index + 1}.txt`,
+            `auto_judge_temp/input_${index + 1}.txt`,
             testCase.input,
             'utf-8',
         );

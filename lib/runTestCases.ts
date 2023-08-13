@@ -8,7 +8,7 @@ const execAsync = promisify(exec);
 
 const runProgram = async (executeCommand: string, index: number) => {
     try {
-        const runCommand = `${executeCommand} < temp/input_${index}.txt`;
+        const runCommand = `${executeCommand} < auto_judge_temp/input_${index}.txt`;
         const runResult = await execAsync(runCommand);
         if (runResult.stderr) {
             console.error('Running Error:', runResult.stderr);

@@ -14,7 +14,7 @@ const runAutoJudge = async (
     sourceFile: string,
     testcase: number | undefined,
 ) => {
-    if (!fs.existsSync('temp')) fs.mkdirSync('temp');
+    if (!fs.existsSync('auto_judge_temp')) fs.mkdirSync('auto_judge_temp');
 
     try {
         if (platform !== 'boj') return;
@@ -34,7 +34,7 @@ const runAutoJudge = async (
     } catch (error) {
         console.error(error);
     } finally {
-        await deleteFolderRecursive('temp');
+        await deleteFolderRecursive('auto_judge_temp');
     }
 };
 
