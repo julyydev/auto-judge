@@ -31,8 +31,14 @@ const printResult = (
 
         console.log(chalk.bold.red(`  ● BOJ ${id} › example ${result.number}`));
         console.log();
-        console.log('    Expected: ' + chalk.green(result.expected));
-        console.log('    Received: ' + chalk.red(result.received));
+        console.log(
+            '    Expected: ' +
+                chalk.green(formatStringByNewLineCharacter(result.expected)),
+        );
+        console.log(
+            '    Received: ' +
+                chalk.red(formatStringByNewLineCharacter(result.received)),
+        );
         console.log();
     }
 
@@ -54,3 +60,13 @@ const printResult = (
 };
 
 export default printResult;
+
+const formatStringByNewLineCharacter = (string: string): string => {
+    const lines = string.split('\n');
+
+    const modifiedLines = lines.map((line, index) =>
+        index === 0 ? line : '              ' + line,
+    );
+
+    return modifiedLines.join('\n');
+};
