@@ -8,12 +8,12 @@ interface Language {
 const languages: Record<string, Language> = {
     cpp: {
         name: 'c++',
-        compile: 'g++ {filename}.cpp -o temp/out',
+        compile: 'g++ -std=c++17 {filename}.cpp -o temp/out',
         execute: './temp/out',
     },
     cc: {
         name: 'c++',
-        compile: 'g++ {filename}.cc -o temp/out',
+        compile: 'g++ -std=c++17 {filename}.cc -o temp/out',
         execute: './temp/out',
     },
     js: {
