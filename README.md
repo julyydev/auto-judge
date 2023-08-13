@@ -1,4 +1,6 @@
 # auto-judge
+(This program is a beta version, and errors may occur)
+
 automatic compilation, execution, and I/O testing of online judge source code.
 
 For now, only [boj](https://www.acmicpc.net/) is supported.
