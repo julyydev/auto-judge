@@ -7,21 +7,26 @@ import * as fs from 'fs';
 import deleteFolderRecursive from './utils/deleteFolderRecursive';
 import createBaekjoonInputFile from './getBaekjoonTestCase';
 import printResult from './printResult';
+import { CompileOption } from './types/compileOption';
+import { directoryName } from './constants/name';
 
 const runAutoJudge = async (
     platform: OnlineJudgePlatform,
     id: number,
     sourceFile: string,
     testcase: number | undefined,
+    compileOption: CompileOption,
 ) => {
-    if (!fs.existsSync('auto_judge_temp')) fs.mkdirSync('auto_judge_temp');
+    if (!fs.existsSync(directoryName)) fs.mkdirSync(directoryName);
 
     try {
         if (platform !== 'boj') return;
         const testCases = (await createBaekjoonInputFile(id)) as TestCase[];
 
-        const { compileCommand, executeCommand } =
-            getCommandByLanguage(sourceFile);
+        const { compileCommand, executeCommand } = getCommandByLanguage(
+            sourceFile,
+            compileOption,
+        );
         if (compileCommand !== null) await compile(compileCommand);
 
         const totalResult = await runTestCases(
@@ -34,7 +39,7 @@ const runAutoJudge = async (
     } catch (error) {
         console.error(error);
     } finally {
-        await deleteFolderRecursive('auto_judge_temp');
+        await deleteFolderRecursive(directoryName);
     }
 };
 
