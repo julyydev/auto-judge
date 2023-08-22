@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 import * as fs from 'fs';
 import * as ora from 'ora';
 import * as chalk from 'chalk';
-import { log } from 'util';
+import { performance } from 'perf_hooks';
 
 export interface TestCase {
     input: string;
