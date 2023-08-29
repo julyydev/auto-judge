@@ -3,21 +3,30 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import { performance } from 'perf_hooks';
 import * as ora from 'ora';
+import { directoryName } from './constants/name';
+import AutoJudgeError from './utils/autoJudgeError';
 
 const execAsync = promisify(exec);
 
-const runProgram = async (executeCommand: string, index: number) => {
+export type timeout = 'timeout';
+
+const runProgram = async (
+    executeCommand: string,
+    index: number,
+): Promise<string | timeout> => {
     try {
-        const runCommand = `${executeCommand} < auto_judge_temp/input_${index}.txt`;
-        const runResult = await execAsync(runCommand);
-        if (runResult.stderr) {
-            console.error('Running Error:', runResult.stderr);
-            return;
-        }
+        const runCommand = `${executeCommand} < ${directoryName}/input_${index}.txt`;
+        const runResultPromise = execAsync(runCommand, {
+            signal: AbortSignal.timeout(2000),
+        });
+
+        const runResult = await runResultPromise;
 
         return runResult.stdout;
     } catch (error) {
-        throw error;
+        if ((error as Error).name === 'AbortError') return 'timeout';
+
+        throw new AutoJudgeError('Runtime Error', (error as Error).toString());
     }
 };
 
@@ -26,7 +35,7 @@ interface TestResult {
     isSuccess: boolean;
     time: string;
     expected: string;
-    received: string;
+    received: string | timeout;
 }
 
 export interface TotalResult {
@@ -51,40 +60,45 @@ const runTestCases = async (
 
     const start = performance.now();
 
-    if (specificCase === undefined) {
-        // run all test cases
-        for (const [index, testCase] of testCases.entries()) {
+    try {
+        if (specificCase === undefined) {
+            // run all test cases
+            for (const [index, testCase] of testCases.entries()) {
+                const start = performance.now();
+                const result = await runProgram(executeCommand, index + 1);
+                const end = performance.now();
+
+                const testResult: TestResult = {
+                    number: index + 1,
+                    isSuccess:
+                        removeLeadingSpaces(result!) ===
+                        removeLeadingSpaces(testCase.output),
+                    time: (end - start).toFixed(0),
+                    expected: testCase.output,
+                    received: result,
+                };
+                testResults.push(testResult);
+            }
+        } else {
+            // run only specific test case
             const start = performance.now();
-            const result = await runProgram(executeCommand, index + 1);
+            const result = await runProgram(executeCommand, specificCase);
             const end = performance.now();
 
             const testResult: TestResult = {
-                number: index + 1,
+                number: specificCase,
                 isSuccess:
                     removeLeadingSpaces(result!) ===
-                    removeLeadingSpaces(testCase.output),
+                    removeLeadingSpaces(testCases[specificCase - 1].output),
                 time: (end - start).toFixed(0),
-                expected: testCase.output,
-                received: result as string,
+                expected: testCases[specificCase - 1].output,
+                received: result,
             };
             testResults.push(testResult);
         }
-    } else {
-        // run only specific test case
-        const start = performance.now();
-        const result = await runProgram(executeCommand, specificCase);
-        const end = performance.now();
-
-        const testResult: TestResult = {
-            number: specificCase,
-            isSuccess:
-                removeLeadingSpaces(result!) ===
-                removeLeadingSpaces(testCases[specificCase - 1].output),
-            time: (end - start).toFixed(0),
-            expected: testCases[specificCase - 1].output,
-            received: result as string,
-        };
-        testResults.push(testResult);
+    } catch (error) {
+        spinner.fail('Running Test Case Failed');
+        throw error;
     }
 
     const end = performance.now();

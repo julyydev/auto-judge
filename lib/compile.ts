@@ -3,6 +3,7 @@ import { promisify } from 'util';
 import { performance } from 'perf_hooks';
 import * as ora from 'ora';
 import * as chalk from 'chalk';
+import AutoJudgeError from './utils/autoJudgeError';
 
 const execAsync = promisify(exec);
 
@@ -15,17 +16,11 @@ export const compile = async (compileCommand: string) => {
     const spinner = ora('Compiling...').start();
 
     try {
-        const compileResult = await execAsync(compileCommand);
-
-        if (compileResult.stderr) {
-            console.error('Compile Error:', compileResult.stderr);
-            return;
-        }
+        await execAsync(compileCommand);
     } catch (error) {
         spinner.fail('Compile Failed');
         const compileErr = error as CompileError;
-        console.log(compileErr.stderr);
-        throw new Error('Compile Error');
+        throw new AutoJudgeError('Compile Error', compileErr.stderr);
     }
 
     const end = performance.now();

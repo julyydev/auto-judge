@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import * as ora from 'ora';
 import * as chalk from 'chalk';
 import { performance } from 'perf_hooks';
+import AutoJudgeError from './utils/autoJudgeError';
 
 export interface TestCase {
     input: string;
@@ -19,7 +20,12 @@ const getBaekjoonTestCase = async (id: number) => {
             .get(url, res => {
                 if (res.statusCode === 404) {
                     spinner.fail('Fetching Failed');
-                    reject(Error('Non-existent problem id'));
+                    reject(
+                        new AutoJudgeError(
+                            'Non-existent Problem ID',
+                            id.toString(),
+                        ),
+                    );
                     return;
                 }
 

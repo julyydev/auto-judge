@@ -9,6 +9,8 @@ import createBaekjoonInputFile from './getBaekjoonTestCase';
 import printResult from './printResult';
 import { CompileOption } from './types/compileOption';
 import { directoryName } from './constants/name';
+import AutoJudgeError from './utils/autoJudgeError';
+import * as chalk from 'chalk';
 
 const runAutoJudge = async (
     platform: OnlineJudgePlatform,
@@ -37,7 +39,12 @@ const runAutoJudge = async (
 
         printResult(id, sourceFile, totalResult);
     } catch (error) {
-        console.error(error);
+        if (error instanceof AutoJudgeError) {
+            console.error('🚨 ' + error.message);
+            console.error(chalk.dim(error.body));
+        } else {
+            console.error('🚨 Unknown error caught:', error);
+        }
     } finally {
         await deleteFolderRecursive(directoryName);
     }

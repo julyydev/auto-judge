@@ -13,6 +13,14 @@ const printResult = (
     console.log(`  BOJ ${id}` + ` https://www.acmicpc.net/problem/${id}`);
 
     for (const result of totalResult.testResults) {
+        if (result.received === 'timeout') {
+            console.log(
+                chalk.red('    ✕ ') +
+                    chalk.dim(`example ${result.number} [Time Out]`),
+            );
+            continue;
+        }
+
         if (result.isSuccess)
             console.log(
                 chalk.green('    ✓ ') +
@@ -27,7 +35,7 @@ const printResult = (
 
     console.log();
     for (const result of totalResult.testResults) {
-        if (result.isSuccess) continue;
+        if (result.isSuccess || result.received === 'timeout') continue;
 
         console.log(chalk.bold.red(`  ● BOJ ${id} › example ${result.number}`));
         console.log();
