@@ -1,5 +1,11 @@
 # auto-judge
 
+> **There is a critical issue(can't get test cases) with the old version.**
+> 
+> **Please use it after updating to the latest version (>= v0.0.9).**
+
+<br/>
+
 Automatic compilation, execution, and I/O testing of online judge source code.
 
 For now, only [boj](https://www.acmicpc.net/) is supported.
