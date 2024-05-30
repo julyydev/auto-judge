@@ -62,7 +62,7 @@ const compileJava = ({ filename, compileOption }: CommandParameter) => {
 
     const version = versionMap[compileOption.java];
 
-    return `javac -release ${version} -J-Xms1024m -J-Xmx1920m -J-Xss512m -encoding UTF-8 ${filename}.java`;
+    return `javac --release ${version} -J-Xms1024m -J-Xmx1920m -J-Xss512m -encoding UTF-8 ${filename}.java`;
 };
 
 const compileJavaScript = ({}: CommandParameter) => {
