@@ -1,4 +1,5 @@
 use crate::args::Platform;
+use crate::constants::fetch::{BOJ_BASE_URL, BOJ_USER_AGENT};
 use reqwest::Client;
 use scraper::{Html, Selector};
 use std::error::Error;
@@ -15,21 +16,19 @@ pub async fn fetch_test_cases(id: &str, platform: Platform) -> Vec<TestCase> {
     );
 
     match platform {
-        Platform::Boj => fetch_boj_test_cases(id).await
-    }.unwrap_or_else(|e| {
+        Platform::Boj => fetch_boj_test_cases(id).await,
+    }
+    .unwrap_or_else(|e| {
         eprintln!("Error fetching test cases: {}", e);
         vec![]
     })
 }
 
 async fn fetch_boj_test_cases(id: &str) -> Result<Vec<TestCase>, Box<dyn Error>> {
-    let url = format!("https://www.acmicpc.net/problem/{}", id);
-    let user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3";
-
     let client = Client::new();
     let res = client
-        .get(url)
-        .header("User-Agent", user_agent)
+        .get(format!("{}/{}", BOJ_BASE_URL, id))
+        .header("User-Agent", BOJ_USER_AGENT)
         .send()
         .await?;
 
