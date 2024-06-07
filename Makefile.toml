@@ -1,0 +1,12 @@
+[tasks.hello]
+description = "Run a custom script"
+script = [
+    "echo Hello, World!",
+]
+
+[tasks.dev]
+description = "Run a development server"
+script = [
+    "cargo build --release",
+    "./target/release/aj",
+]

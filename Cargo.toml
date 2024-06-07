@@ -1,0 +1,10 @@
+[package]
+name = "auto-judge"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "auto-judge"
+path = "src/main.rs"
+
+[dependencies]
