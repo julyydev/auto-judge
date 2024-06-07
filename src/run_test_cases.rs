@@ -10,10 +10,12 @@ pub fn run_test_cases(test_cases: &Vec<TestCase>, specific_test_case: Option<Str
         // 모든 테스트 케이스를 실행하는 로직
     }
 
-    for (_, test_case) in test_cases.iter().enumerate() {
-        println!(
-            "Input: {}, Expected Output: {}",
-            test_case.input, test_case.output
-        );
+    for (i, test_case) in test_cases.iter().enumerate() {
+        println!("Test Case #{}", i + 1);
+        println!("Input: ");
+        println!("{}", test_case.input);
+        println!("Output: ");
+        println!("{}", test_case.output);
+        println!();
     }
 }
