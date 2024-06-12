@@ -1,27 +1,48 @@
 use crate::args::Platform;
 use crate::constants::fetch::{BOJ_BASE_URL, BOJ_USER_AGENT};
+use crate::utils::spinner;
+use crate::utils::time;
+use colored::Colorize;
 use reqwest::Client;
 use scraper::{Html, Selector};
 use std::error::Error;
 
+#[derive(Clone, Debug)]
 pub struct TestCase {
     pub input: String,
     pub output: String,
 }
 
 pub async fn fetch_test_cases(id: &str, platform: Platform) -> Vec<TestCase> {
-    println!(
-        "Fetching test cases for ID: {}, Platform: {:?}",
-        id, platform
-    );
+    let spinner = spinner::start(&format!("Fetching {:?} {} Test Cases...", platform, id));
+    let time = time::start();
 
-    match platform {
+    let result = match platform {
         Platform::Boj => fetch_boj_test_cases(id).await,
-    }
-    .unwrap_or_else(|e| {
-        eprintln!("Error fetching test cases: {}", e);
-        vec![]
-    })
+    };
+
+    let res = match result {
+        Ok(test_cases) => {
+            spinner::done(
+                &spinner,
+                &format!("Fetched {:?} {} Test Cases", platform, id),
+            );
+            test_cases
+        }
+        Err(e) => {
+            spinner::error(
+                &spinner,
+                &format!("Fetched {:?} {} Test Cases", platform, id),
+            );
+            eprintln!("{}", format!("❗️ {}", e).dimmed());
+            vec![]
+        }
+    };
+
+    time::print_duration(time, "Fetched Time:");
+    println!();
+
+    res
 }
 
 async fn fetch_boj_test_cases(id: &str) -> Result<Vec<TestCase>, Box<dyn Error>> {
