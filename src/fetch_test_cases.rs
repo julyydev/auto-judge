@@ -82,12 +82,3 @@ fn parse_test_cases(body: &str) -> Result<Vec<TestCase>, Box<dyn Error>> {
 
     Ok(test_cases)
 }
-
-pub fn print_test_cases(test_cases: &[TestCase]) {
-    for (i, test_case) in test_cases.iter().enumerate() {
-        println!("Test Case #{}", i + 1);
-        println!("Input: \n{}", test_case.input);
-        println!("Output: \n{}", test_case.output);
-        println!();
-    }
-}

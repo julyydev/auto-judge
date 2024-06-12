@@ -209,7 +209,11 @@ fn print_results(platform: Platform, id: String, run_result: &RunResult) {
     );
 }
 
-fn format_count(count: usize, label: &str, color: fn(String) -> colored::ColoredString) -> colored::ColoredString {
+fn format_count(
+    count: usize,
+    label: &str,
+    color: fn(String) -> colored::ColoredString,
+) -> colored::ColoredString {
     if count == 0 {
         format!("{} {}", count, label).normal()
     } else {
