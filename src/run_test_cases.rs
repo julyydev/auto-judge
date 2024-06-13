@@ -115,7 +115,7 @@ pub async fn run_test_cases(
     };
 
     print_results(platform, id, &run_result);
-    time::print_duration(start_time, "Total Run Time:");
+    time::print_duration(start_time, "Total Run Time");
 
     Ok(())
 }
