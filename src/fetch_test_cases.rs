@@ -9,6 +9,7 @@ use std::error::Error;
 
 #[derive(Clone, Debug)]
 pub struct TestCase {
+    pub id: String,
     pub input: String,
     pub output: String,
 }
@@ -73,10 +74,11 @@ fn parse_test_cases(body: &str) -> Result<Vec<TestCase>, Box<dyn Error>> {
     let test_cases = document
         .select(&selector_input)
         .zip(document.select(&selector_output))
-        .map(|(input_element, output_element)| {
+        .enumerate()
+        .map(|(i, (input_element, output_element))| {
             let input = input_element.text().collect::<Vec<_>>().join("");
             let output = output_element.text().collect::<Vec<_>>().join("");
-            TestCase { input, output }
+            TestCase { id: (i + 1).to_string(), input, output }
         })
         .collect();
 

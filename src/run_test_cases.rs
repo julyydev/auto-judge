@@ -11,7 +11,7 @@ use tokio::time::{timeout, Duration};
 
 #[derive(Debug, Clone)]
 struct TestResult {
-    number: usize,
+    id: String,
     is_success: bool,
     time: String,
     expected: String,
@@ -59,7 +59,7 @@ pub async fn run_test_cases(
                     let success = output.trim() == test_case.output.trim();
 
                     Ok(Some(TestResult {
-                        number: i + 1,
+                        id: test_case.id.clone(),
                         is_success: success,
                         time: format!("{} ms", duration.as_millis()),
                         expected: test_case.output.clone(),
@@ -68,7 +68,7 @@ pub async fn run_test_cases(
                 })
                 .await
                 .unwrap_or(Ok(Some(TestResult {
-                    number: i + 1,
+                    id: test_case.id.clone(),
                     is_success: false,
                     time: "timeout".to_string(),
                     expected: test_case.output.clone(),
@@ -164,7 +164,7 @@ fn print_results(platform: Platform, id: String, run_result: &RunResult) {
         println!(
             "    {} {}",
             status,
-            format!("test case #{} ({})", result.number, result.time).dimmed()
+            format!("test case #{} ({})", result.id, result.time).dimmed()
         );
     }
     println!();
@@ -182,7 +182,7 @@ fn print_results(platform: Platform, id: String, run_result: &RunResult) {
 
         println!(
             "{}\n",
-            format!("  ● {:?} {} > test case {}", platform, id, result.number).red()
+            format!("  ● {:?} {} > test case {}", platform, id, result.id).red()
         );
 
         let expected_lines: Vec<&str> = result.expected.split('\n').collect();
