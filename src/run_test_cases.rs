@@ -36,21 +36,21 @@ pub async fn run_test_cases(
     let spinner = spinner::start("Running Test Cases...");
     let start_time = time::start();
 
+    let test_cases: Vec<TestCase> = match specific_test_case {
+        Some(ref id) => test_cases
+            .iter()
+            .cloned()
+            .filter(|test_case| &test_case.id == id)
+            .collect(),
+        None => test_cases.to_vec(),
+    };
+
     let mut handles = vec![];
 
-    for (i, test_case) in test_cases.iter().cloned().enumerate() {
-        let specific_test_case = specific_test_case.clone();
-        let test_case = test_case.clone();
+    for test_case in test_cases.iter().cloned() {
         let handle = tokio::spawn(async move {
             let result: Result<Option<TestResult>, Box<dyn Error + Send + Sync>> =
                 timeout(Duration::from_secs(2), async {
-                    let test_case_name = format!("test_case_{}", i + 1);
-
-                    if let Some(ref specific_test_case) = specific_test_case {
-                        if specific_test_case != &test_case_name {
-                            return Ok(None);
-                        }
-                    }
                     run_single_test_case(&test_case).await.map(Some)
                 })
                 .await
