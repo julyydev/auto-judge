@@ -12,6 +12,7 @@ use crate::fetch_test_cases::fetch_test_cases;
 use crate::get_args::get_args;
 use crate::run_test_cases::run_test_cases;
 use crate::utils::dir::init_auto_judge;
+use std::process::exit;
 
 #[tokio::main]
 async fn main() {
@@ -35,4 +36,6 @@ async fn main() {
     run_test_cases(args.platform, args.id, &test_cases, args.test_case)
         .await
         .unwrap();
+
+    exit(0)
 }

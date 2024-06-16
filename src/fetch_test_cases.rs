@@ -78,7 +78,11 @@ fn parse_test_cases(body: &str) -> Result<Vec<TestCase>, Box<dyn Error>> {
         .map(|(i, (input_element, output_element))| {
             let input = input_element.text().collect::<Vec<_>>().join("");
             let output = output_element.text().collect::<Vec<_>>().join("");
-            TestCase { id: (i + 1).to_string(), input, output }
+            TestCase {
+                id: (i + 1).to_string(),
+                input,
+                output,
+            }
         })
         .collect();
 
