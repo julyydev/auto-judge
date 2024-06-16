@@ -51,20 +51,7 @@ pub async fn run_test_cases(
                             return Ok(None);
                         }
                     }
-
-                    let start_time = tokio::time::Instant::now();
-                    let output = run_single_test_case(&test_case).await?;
-                    let duration = start_time.elapsed();
-
-                    let success = output.trim() == test_case.output.trim();
-
-                    Ok(Some(TestResult {
-                        id: test_case.id.clone(),
-                        is_success: success,
-                        time: format!("{} ms", duration.as_millis()),
-                        expected: test_case.output.clone(),
-                        received: output,
-                    }))
+                    run_single_test_case(&test_case).await.map(Some)
                 })
                 .await
                 .unwrap_or(Ok(Some(TestResult {
@@ -122,8 +109,9 @@ pub async fn run_test_cases(
 
 async fn run_single_test_case(
     test_case: &TestCase,
-) -> Result<String, Box<dyn Error + Send + Sync>> {
+) -> Result<TestResult, Box<dyn Error + Send + Sync>> {
     let test_case_input = test_case.input.clone();
+    let start_time = tokio::time::Instant::now();
     let output =
         tokio::task::spawn_blocking(move || -> Result<String, Box<dyn Error + Send + Sync>> {
             let mut child = Command::new(format!("{}/out", DIRECTORY_NAME))
@@ -142,7 +130,16 @@ async fn run_single_test_case(
         })
         .await??;
 
-    Ok(output)
+    let duration = start_time.elapsed();
+    let success = output.trim() == test_case.output.trim();
+
+    Ok(TestResult {
+        id: test_case.id.clone(),
+        is_success: success,
+        time: format!("{} ms", duration.as_millis()),
+        expected: test_case.output.clone(),
+        received: output,
+    })
 }
 
 fn print_results(platform: Platform, id: String, run_result: &RunResult) {
