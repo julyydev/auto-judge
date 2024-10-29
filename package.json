@@ -7,7 +7,9 @@
     "aj": "./bin/auto-judge"
   },
   "scripts": {
+    "prebuild": "cargo fmt",
     "build": "cargo build --release && mkdir -p bin && cp ./target/release/auto-judge ./bin/auto-judge",
+    "dev": "cargo run",
     "start": "./bin/auto-judge"
   },
   "repository": {
