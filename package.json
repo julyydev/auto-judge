@@ -3,7 +3,8 @@
   "version": "1.0.0-beta.0",
   "description": "automatic compilation, execution, and I/O testing of online judge source code",
   "bin": {
-    "auto-judge": "./bin/auto-judge"
+    "auto-judge": "./bin/auto-judge",
+    "aj": "./bin/auto-judge"
   },
   "scripts": {
     "build": "cargo build --release && mkdir -p bin && cp ./target/release/auto-judge ./bin/auto-judge",
