@@ -22,20 +22,20 @@ pub enum Commands {
 #[derive(Debug, Args)]
 pub struct RunArgs {
     /// Problem ID to fetch test cases (required)
-    problem_id: String,
+    pub problem_id: String,
 
     /// Platform to fetch the problem from. (optional, default: "boj")
     #[arg(short = 'p', long = "platform", default_value_t = OnlineJudgePlatform::Boj)]
-    online_judge_platform: OnlineJudgePlatform,
+    pub online_judge_platform: OnlineJudgePlatform,
 
     /// Path to the source code file. (optional, default: "main.cpp")
     #[arg(short = 's', long = "source", default_value = "main.cpp")]
-    source_file: String,
+    pub source_file: String,
 
     /// Test case ID to run (optional).
     /// If not provided, all test cases will be run.
     #[arg(short = 't', long = "test-case")]
-    test_case: Option<String>,
+    pub test_case: Option<String>,
 }
 
 /// `Config` 명령어의 인자를 정의하는 구조체
