@@ -2,8 +2,10 @@ use clap::{Args, Parser, Subcommand, ValueEnum};
 use std::fmt;
 
 #[derive(Parser)]
-#[command(name = "aj")]
+#[command(name = "auto-judge")]
+#[command(bin_name = "aj")]
 #[command(about = "Online Judge Automation Tool", long_about = None)]
+#[command(version = env!("CARGO_PKG_VERSION"))]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Commands,
