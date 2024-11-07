@@ -1,6 +1,6 @@
 {
   "name": "auto-judge",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "automatic compilation, execution, and I/O testing of online judge source code",
   "bin": {
     "auto-judge": "./bin/auto-judge",
